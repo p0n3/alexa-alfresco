@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+
+<beans>
+	<bean id="alexa.jscript" parent="baseJavaScriptExtension" class="org.alfresco.alexa.repo.jscript.AlexaJScript">
+		<property name="extensionName">
+				<value>alexa</value>
+		</property>
+		<property name="alexaService">
+			<ref bean="alexa.service"/>
+		</property>
+	</bean>
+</beans>

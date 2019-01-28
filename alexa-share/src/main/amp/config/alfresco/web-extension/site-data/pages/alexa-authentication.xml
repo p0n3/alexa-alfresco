@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<page>
+   <title>Alexa authentication</title>
+   <description>Linking Alfresco account with Alexa</description>
+   <template-instance>simple</template-instance>
+   <authentication>user</authentication>
+   
+   <components>
+		<component>
+			<region-id>components</region-id>
+			<url>/org/alfresco/alexa/alexa-authentication</url>
+		</component>
+	
+	</components>
+	
+</page>

@@ -1,0 +1,8 @@
+<webscript>
+    <shortname>Alexa Authorization Webscript</shortname>
+    <description>Hands back a greeting</description>
+    <url>/api/alexa/authorization</url>
+    <family>alexa</family>
+    <authentication>user</authentication>
+    <format default="json"></format>
+</webscript>

@@ -1,0 +1,5 @@
+<webscript>
+  <shortname>Alexa authentication</shortname>
+  <description>Linking Alfresco account with Alexa</description>
+  <url>/org/alfresco/alexa/alexa-authentication</url>
+</webscript>

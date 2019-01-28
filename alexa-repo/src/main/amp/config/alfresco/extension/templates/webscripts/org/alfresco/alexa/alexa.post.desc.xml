@@ -1,0 +1,8 @@
+<webscript>
+    <shortname>Alexa Sample Webscript</shortname>
+    <description>Hands back a greeting</description>
+    <url>/api/alexa/endpoint</url>
+    <family>alexa</family>
+    <authentication>none</authentication>
+    <format default="json"></format>
+</webscript>
