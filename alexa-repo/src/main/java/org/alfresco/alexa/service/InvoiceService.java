@@ -6,6 +6,9 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * Exposes methods to manage Unpaid and Paid Documents
+ */
 public class InvoiceService {
 
     private final Logger logger = Logger.getLogger(InvoiceService.class);
