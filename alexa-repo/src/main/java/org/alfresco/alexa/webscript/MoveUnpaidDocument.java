@@ -21,12 +21,12 @@ public class MoveUnpaidDocument extends DeclarativeWebScript {
     @Override
     protected Map<String, Object> executeImpl(WebScriptRequest request, Status status, Cache cache) {
         logger.debug("Move Unpaid Document is called...");
-        String documentName = request.getParameter("documentName");
+        String nodeRef = request.getParameter("nodeRef");
 
         Map<String, Object> model = new HashMap<>();
 
         try {
-            invoiceService.moveFromUnpaidToPaid(new NodeRef(documentName));
+            invoiceService.moveFromUnpaidToPaid(new NodeRef(nodeRef));
             model.put("success", "true");
             return model;
         } catch (FileNotFoundException e) {
