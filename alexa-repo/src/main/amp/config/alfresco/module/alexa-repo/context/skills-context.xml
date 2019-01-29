@@ -97,6 +97,10 @@
 		<property name="serviceRegistry">
             <ref bean="ServiceRegistry" />
         </property>
+        <property name="invoiceService">
+            <ref bean="alexa.invoiceService" />
+        </property>
+        
 	</bean>
 
 

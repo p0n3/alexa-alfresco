@@ -6,9 +6,11 @@ import java.util.Map;
 import org.alfresco.alexa.AlfrescoVoiceSessionIntent;
 import org.alfresco.alexa.AlfrescoVoiceSkill;
 import org.alfresco.alexa.model.SessionResponse;
+import org.alfresco.alexa.service.InvoiceService;
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.security.authentication.AuthenticationUtil;
 import org.alfresco.service.ServiceRegistry;
+import org.alfresco.service.cmr.model.FileNotFoundException;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.repository.StoreRef;
@@ -24,6 +26,7 @@ public class InvoicesSkill extends AlfrescoVoiceSkill implements AlfrescoVoiceSe
 	public static final String STAGE_CHOICE = "choice";
 
 	private ServiceRegistry serviceRegistry;
+	private InvoiceService invoiceService;
 	
 	@Override
 	public SessionResponse getResponse(Map<String, Object> attributes, Map<String, String> slots) {
@@ -88,18 +91,18 @@ public class InvoicesSkill extends AlfrescoVoiceSkill implements AlfrescoVoiceSe
 			String confirmStatus = slots.get("Confirm");
 			if(confirmStatus != null && confirmStatus.equals("yes")) {
 				// mark the invoice as paid
-				NodeService ns = this.serviceRegistry.getNodeService();
+				//NodeService ns = this.serviceRegistry.getNodeService();
 				
-				NodeRef inv = new NodeRef(invoice);
 				
-				String userName = AuthenticationUtil.getFullyAuthenticatedUser();
-				NodeRef person = this.serviceRegistry.getPersonService().getPerson(userName);
-				NodeRef homeFolder = (NodeRef) ns.getProperty(person, ContentModel.PROP_HOMEFOLDER);
-				NodeRef invoicesFolder = ns.getChildByName(homeFolder, ContentModel.ASSOC_CONTAINS, "Invoices");
-//				NodeRef unpaidFolder = ns.getChildByName(invoicesFolder, ContentModel.ASSOC_CONTAINS, "cm:Unpaid");				
-				NodeRef paidFolder = ns.getChildByName(invoicesFolder, ContentModel.ASSOC_CONTAINS, "Paid");				
-				
-				ns.moveNode(inv, paidFolder, ContentModel.ASSOC_CONTAINS, ns.getPrimaryParent(inv).getQName());
+				try {
+					
+					this.invoiceService.moveFromUnpaidToPaid(new NodeRef(invoice));
+					
+				} catch (FileNotFoundException e) {
+					sessionResponse.setShouldEndSession(true);
+					sessionResponse.setSpeechText("The invoice not found");
+					return sessionResponse;
+				}
 				
 				sessionResponse.setShouldEndSession(true);
 				sessionResponse.setSpeechText("The invoice was mark as paid");
@@ -122,6 +125,10 @@ public class InvoicesSkill extends AlfrescoVoiceSkill implements AlfrescoVoiceSe
 	
 	public void setServiceRegistry(ServiceRegistry serviceRegistry) {
 		this.serviceRegistry = serviceRegistry;
+	}
+	
+	public void setInvoiceService(InvoiceService invoiceService) {
+		this.invoiceService = invoiceService;
 	}
 
 }
