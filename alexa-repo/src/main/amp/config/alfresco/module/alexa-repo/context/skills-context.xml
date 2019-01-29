@@ -21,34 +21,15 @@
 <!-- 	</bean> -->
 
 
-	<bean id="alexa.sample.helloUser" class="org.alfresco.alexa.sample.UserNameSkill" parent="alexa.skill">
-		<property name="skillName">
-			<value>Hello User</value>
-		</property>
-		<property name="skillId">
-			<value>amzn1.ask.skill.6aac0bad-4288-4c3f-9575-4c4064eda0ce</value>
-		</property>
-		<property name="helpText">
-			<value>Say hello</value>
-		</property>
-		<property name="welcomeText">
-			<value>Welcome to the Alfresco</value>
-		</property>
-		
-		<property name="serviceRegistry">
-            <ref bean="ServiceRegistry" />
-        </property>
-	</bean>
-	
-<!-- 	<bean id="alexa.sample.invoice" class="org.alfresco.alexa.sample.InvoicesSkill" parent="alexa.skill"> -->
+<!-- 	<bean id="alexa.sample.helloUser2" class="org.alfresco.alexa.sample.UserNameSkill" parent="alexa.skill"> -->
 <!-- 		<property name="skillName"> -->
-<!-- 			<value>Alfresco invoices</value> -->
+<!-- 			<value>Hello User</value> -->
 <!-- 		</property> -->
 <!-- 		<property name="skillId"> -->
-<!-- 			<value>amzn1.ask.skill.6aac0bad-4288-4c3f-9575-4c4064eda0ce</value> -->
+<!-- 			<value>amzn1.ask.skill.76de4c77-447a-451c-ac99-ae4b873c9497</value> -->
 <!-- 		</property> -->
 <!-- 		<property name="helpText"> -->
-<!-- 			<value>Say something</value> -->
+<!-- 			<value>Say hello</value> -->
 <!-- 		</property> -->
 <!-- 		<property name="welcomeText"> -->
 <!-- 			<value>Welcome to the Alfresco</value> -->
@@ -58,6 +39,65 @@
 <!--             <ref bean="ServiceRegistry" /> -->
 <!--         </property> -->
 <!-- 	</bean> -->
+
+
+<!-- 	<bean id="alexa.sample.helloUser" class="org.alfresco.alexa.sample.UserNameSkill" parent="alexa.skill"> -->
+<!-- 		<property name="skillName"> -->
+<!-- 			<value>Hello User</value> -->
+<!-- 		</property> -->
+<!-- 		<property name="skillId"> -->
+<!-- 			<value>amzn1.ask.skill.6aac0bad-4288-4c3f-9575-4c4064eda0ce</value> -->
+<!-- 		</property> -->
+<!-- 		<property name="helpText"> -->
+<!-- 			<value>Say hello</value> -->
+<!-- 		</property> -->
+<!-- 		<property name="welcomeText"> -->
+<!-- 			<value>Welcome to the Alfresco</value> -->
+<!-- 		</property> -->
+		
+<!-- 		<property name="serviceRegistry"> -->
+<!--             <ref bean="ServiceRegistry" /> -->
+<!--         </property> -->
+<!-- 	</bean> -->
+	
+	
+	<bean id="alexa.scriptsSkill" class="org.alfresco.alexa.AlfrescoVoiceScriptSkill" parent="alexa.skill">
+		<property name="skillName">
+			<value>Alfresco Scripts</value>
+		</property>
+		<property name="skillId">
+			<value>amzn1.ask.skill.6b82a7b7-590c-4c04-9340-5321992ee755</value>
+		</property>
+		<property name="helpText">
+			<value>Say your scripts invocation</value>
+		</property>
+		<property name="welcomeText">
+			<value>Welcome to the Alfresco Scripts</value>
+		</property>
+		
+		<property name="serviceRegistry">
+            <ref bean="ServiceRegistry" />
+        </property>
+	</bean>
+	
+	<bean id="alexa.sample.invoice" class="org.alfresco.alexa.sample.InvoicesSkill" parent="alexa.skill">
+		<property name="skillName">
+			<value>Alfresco invoices</value>
+		</property>
+		<property name="skillId">
+			<value>amzn1.ask.skill.6aac0bad-4288-4c3f-9575-4c4064eda0ce</value>
+		</property>
+		<property name="helpText">
+			<value>Say something</value>
+		</property>
+		<property name="welcomeText">
+			<value>Welcome to the Alfresco</value>
+		</property>
+		
+		<property name="serviceRegistry">
+            <ref bean="ServiceRegistry" />
+        </property>
+	</bean>
 
 
 </beans>

@@ -50,6 +50,9 @@ public class DefaultSessionIntentHandler implements RequestHandler {
 		this.alfrescoVoiceIntent = alfrescoVoiceIntent;
 	}
     
+    public String getIntentId() {
+		return intentId;
+	}
     
     private Map<String, String> getSlots(HandlerInput input) {
     	Map<String, String> res = new HashMap<String, String>();

@@ -95,11 +95,11 @@ public class InvoicesSkill extends AlfrescoVoiceSkill implements AlfrescoVoiceSe
 				String userName = AuthenticationUtil.getFullyAuthenticatedUser();
 				NodeRef person = this.serviceRegistry.getPersonService().getPerson(userName);
 				NodeRef homeFolder = (NodeRef) ns.getProperty(person, ContentModel.PROP_HOMEFOLDER);
-				NodeRef invoicesFolder = ns.getChildByName(homeFolder, ContentModel.ASSOC_CONTAINS, "cm:Invoices");
+				NodeRef invoicesFolder = ns.getChildByName(homeFolder, ContentModel.ASSOC_CONTAINS, "Invoices");
 //				NodeRef unpaidFolder = ns.getChildByName(invoicesFolder, ContentModel.ASSOC_CONTAINS, "cm:Unpaid");				
-				NodeRef paidFolder = ns.getChildByName(invoicesFolder, ContentModel.ASSOC_CONTAINS, "cm:Paid");				
+				NodeRef paidFolder = ns.getChildByName(invoicesFolder, ContentModel.ASSOC_CONTAINS, "Paid");				
 				
-				ns.moveNode(invoicesFolder, paidFolder, ContentModel.ASSOC_CONTAINS, ns.getPrimaryParent(inv).getQName());
+				ns.moveNode(inv, paidFolder, ContentModel.ASSOC_CONTAINS, ns.getPrimaryParent(inv).getQName());
 				
 				sessionResponse.setShouldEndSession(true);
 				sessionResponse.setSpeechText("The invoice was mark as paid");

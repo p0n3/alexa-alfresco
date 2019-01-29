@@ -24,8 +24,8 @@
 				cannot for example register policies on them. -->
 	<import resource="classpath:alfresco/module/${project.artifactId}/context/bootstrap-context.xml" />
     <import resource="classpath:alfresco/module/${project.artifactId}/context/service-context.xml" />
-	<import resource="classpath:alfresco/module/${project.artifactId}/context/jscript-context.xml" />
 	<import resource="classpath:alfresco/module/${project.artifactId}/context/webscript-context.xml" />
 	<import resource="classpath:alfresco/module/${project.artifactId}/context/skills-context.xml" />
+	<import resource="classpath:alfresco/module/${project.artifactId}/context/jscript-context.xml" />
 
 </beans>

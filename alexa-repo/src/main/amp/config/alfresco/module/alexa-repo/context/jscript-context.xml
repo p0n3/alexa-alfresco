@@ -9,5 +9,8 @@
 		<property name="alexaService">
 			<ref bean="alexa.service"/>
 		</property>
+		<property name="alfrescoVoiceScriptSkill">
+			<ref bean="alexa.scriptsSkill"/>
+		</property>
 	</bean>
 </beans>
