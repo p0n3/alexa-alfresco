@@ -7,11 +7,14 @@ import java.util.Optional;
 import org.alfresco.alexa.handlers.DefaultCancelIntentHandler;
 import org.alfresco.alexa.handlers.DefaultFallbackIntentHandler;
 import org.alfresco.alexa.handlers.DefaultHelpIntentHandler;
-import org.alfresco.alexa.handlers.DefaultSimpleIntentHandler;
 import org.alfresco.alexa.handlers.DefaultLaunchRequestHandler;
 import org.alfresco.alexa.handlers.DefaultSessionEndedRequestHandler;
+import org.alfresco.alexa.handlers.DefaultSessionIntentHandler;
+import org.alfresco.alexa.handlers.DefaultSimpleIntentHandler;
 import org.alfresco.alexa.handlers.DefaultStopIntentHandler;
 import org.alfresco.alexa.service.AlexaService;
+import org.alfresco.repo.security.authentication.AuthenticationUtil;
+import org.alfresco.service.cmr.repository.NodeRef;
 
 import com.amazon.ask.Skill;
 import com.amazon.ask.Skills;
@@ -91,10 +94,21 @@ public abstract class AlfrescoVoiceSkill {
 		return new DefaultLaunchRequestHandler(this.skillName);
 	}
 	
-	protected void registerIntent(String intentId, AlfrescoVoiceSimpleIntent intent) {
+	protected void registerSimpleIntent(String intentId, AlfrescoVoiceSimpleIntent intent) {
 		handlers.add(new DefaultSimpleIntentHandler(this.skillName, intentId, intent));
 	}
 	
+	protected void registerSessionIntent(String intentId, AlfrescoVoiceSessionIntent intent) {
+		handlers.add(new DefaultSessionIntentHandler(this.skillName, intentId, intent));
+	}
+	
+//	protected NodeRef getPerson() {
+//			
+//			String userName = AuthenticationUtil.getFullyAuthenticatedUser();
+//			
+//			NodeRef person = this.serviceRegistry.getPersonService().getPerson(userName);
+//	}
+		
 	public void cleanup() {
 		
 	}

@@ -6,6 +6,6 @@ import org.alfresco.alexa.model.SessionResponse;
 
 public interface AlfrescoVoiceSessionIntent {
 
-	public SessionResponse getResponse(Map<String, Object> attributes);
+	public SessionResponse getResponse(Map<String, Object> attributes, Map<String, String> slots);
 	
 }

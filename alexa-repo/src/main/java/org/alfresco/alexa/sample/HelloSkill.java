@@ -8,7 +8,7 @@ public class HelloSkill extends AlfrescoVoiceSkill implements AlfrescoVoiceSimpl
 	@Override
 	protected void registerIntents() {
 		
-		this.registerIntent("HelloWorldIntent", this);
+		this.registerSimpleIntent("HelloWorldIntent", this);
 		
 	}
 

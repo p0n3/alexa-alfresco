@@ -15,6 +15,8 @@ package org.alfresco.alexa.handlers;
 
 import static com.amazon.ask.request.Predicates.intentName;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.alfresco.alexa.AlfrescoVoiceSessionIntent;
@@ -23,7 +25,10 @@ import org.alfresco.alexa.model.SessionResponse;
 import com.amazon.ask.attributes.AttributesManager;
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
+import com.amazon.ask.model.IntentRequest;
+import com.amazon.ask.model.Request;
 import com.amazon.ask.model.Response;
+import com.amazon.ask.model.Slot;
 import com.amazon.ask.response.ResponseBuilder;
 
 public class DefaultSessionIntentHandler implements RequestHandler {
@@ -45,6 +50,21 @@ public class DefaultSessionIntentHandler implements RequestHandler {
 		this.alfrescoVoiceIntent = alfrescoVoiceIntent;
 	}
     
+    
+    private Map<String, String> getSlots(HandlerInput input) {
+    	Map<String, String> res = new HashMap<String, String>();
+    	
+    	Request req = input.getRequestEnvelope().getRequest();
+    	if(!(req instanceof IntentRequest) || ((IntentRequest)req).getIntent() == null) {
+    		return res;
+    	}
+    	Map<String, Slot> slotMaps = ((IntentRequest)req).getIntent().getSlots();
+    	for(String key : slotMaps.keySet()) {
+    		res.put(key, slotMaps.get(key).getValue());
+    	}
+    	
+    	return res;
+    }
 
 	@Override
     public boolean canHandle(HandlerInput input) {
@@ -56,7 +76,9 @@ public class DefaultSessionIntentHandler implements RequestHandler {
        
     	AttributesManager attributesManager = input.getAttributesManager();
     	
-    	SessionResponse sessionResponse = alfrescoVoiceIntent.getResponse(attributesManager.getSessionAttributes());
+    	
+    	
+    	SessionResponse sessionResponse = alfrescoVoiceIntent.getResponse(attributesManager.getSessionAttributes(), this.getSlots(input));
     	//input.getRequestEnvelope().getSession().getAttributes()
     	String speechText = sessionResponse.getSpeechText();
     	

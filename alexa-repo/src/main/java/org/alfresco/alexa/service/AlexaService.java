@@ -88,15 +88,10 @@ public class AlexaService {
 
 		String hashedToken = hashToken(token, clientId);
 
-		// pobierz usera
 		NodeRef person = this.personService.getPerson(userName);
 		List<String> userHashes = (List<String>) this.nodeService.getProperty(person, AlexaModel.PROP_AUTH_TOKENS);
 		for (String userHash : userHashes) {
-			// System.out.println(token);
-			// System.out.println(hashedToken);
 
-			// String userHash =
-			// "b5a9d5a7840b8db32083aa71e13bdc700d364ffb1bde6c54ce2cc60916d2c0aa";
 			if (hashedToken.equals(userHash)) {
 				return userName;
 			}
@@ -118,7 +113,7 @@ public class AlexaService {
 			JSONObject json = new JSONObject();
 			json.put("notification", text);
 			//FIXME accesscode 
-			json.put("accessCode", "...");
+			json.put("accessCode", "amzn1.ask.account.AEF4AXCW6GCFGSEGGQCHLWFWZX3UUBMB2XOI5HAF2KBIKY4J2IKO4LEVWF2Q5MKMESRSHNXKT266TUDEQMIF2OSHDX2VIAP2BXHDDCMRXOAEJAVTWG7SLNYSWKRYYUWSLZKIE66DC3F7Q6LUZAFCG7VXUQVAHY64HN2BNKZ2UBAQMKEFH2HTADGJWAB7BD2U52GG7TLXFEY5SVY");
 
 			String urlParameters = json.toString(); // postData.toString();
 

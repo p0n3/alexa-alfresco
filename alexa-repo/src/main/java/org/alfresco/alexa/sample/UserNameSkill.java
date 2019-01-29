@@ -20,7 +20,7 @@ public class UserNameSkill extends AlfrescoVoiceSkill implements AlfrescoVoiceSi
 	@Override
 	protected void registerIntents() {
 		
-		this.registerIntent("UserNameIntent", this);
+		this.registerSimpleIntent("UserNameIntent", this);
 		
 	}
 

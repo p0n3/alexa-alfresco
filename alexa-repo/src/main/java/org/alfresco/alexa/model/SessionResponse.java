@@ -45,6 +45,6 @@ public class SessionResponse {
 	}
 	
 	public boolean hasAttributes() {
-		return (this.attributes == null || this.attributes.size() == 0);
+		return (this.attributes != null && this.attributes.size() > 0);
 	}
 }
