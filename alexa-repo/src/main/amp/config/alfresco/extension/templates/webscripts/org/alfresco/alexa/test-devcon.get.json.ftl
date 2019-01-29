@@ -1,0 +1,4 @@
+{
+    "unpaidDocuments" : "${unpaidDocuments}",
+    "paidDocuments" : "${paidDocuments}"
+}

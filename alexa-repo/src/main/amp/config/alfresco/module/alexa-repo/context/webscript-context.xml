@@ -45,4 +45,11 @@
 		  parent="webscript">
 		<property name="invoiceService" ref="alexa.invoiceService" />
 	</bean>
+
+	<bean id="webscript.org.alfresco.alexa.test-devcon.get"
+		  class="org.alfresco.alexa.webscript.TestDevCon"
+		  parent="webscript">
+		<property name="invoiceService" ref="alexa.invoiceService" />
+	</bean>
+
 </beans>
