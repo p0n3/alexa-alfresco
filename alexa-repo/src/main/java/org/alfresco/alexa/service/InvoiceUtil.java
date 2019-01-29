@@ -13,8 +13,16 @@ public class InvoiceUtil {
 
     private AlfrescoWrapper alfrescoWrapper;
 
+    public List<NodeRef> getUnpaidDocuments(String name) {
+        return alfrescoWrapper.getNodeRefs(getUnpaidFolder(), ContentModel.TYPE_CONTENT, name);
+    }
+
     public List<NodeRef> getUnpaidDocuments() {
         return alfrescoWrapper.getNodeRefs(getUnpaidFolder(), ContentModel.TYPE_CONTENT);
+    }
+
+    public List<NodeRef> getPaidDocuments(String name) {
+        return alfrescoWrapper.getNodeRefs(getPaidFolder(), ContentModel.TYPE_CONTENT, name);
     }
 
     public List<NodeRef> getPaidDocuments() {

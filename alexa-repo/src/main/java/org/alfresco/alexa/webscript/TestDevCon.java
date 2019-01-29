@@ -2,6 +2,7 @@ package org.alfresco.alexa.webscript;
 
 import org.alfresco.alexa.service.InvoiceService;
 import org.alfresco.service.cmr.repository.NodeRef;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.extensions.webscripts.Cache;
 import org.springframework.extensions.webscripts.DeclarativeWebScript;
@@ -24,26 +25,54 @@ public class TestDevCon extends DeclarativeWebScript {
 
         Map<String, Object> model = new HashMap<>();
 
+        populateModelWithDocuments(model);
 
+        populateModelWithDocuments(model, request.getParameter("documentName"));
+
+        return model;
+    }
+
+    private void populateModelWithDocuments(Map<String, Object> model, String documentName) {
+
+        if (documentName == null || StringUtils.isBlank(documentName)) {
+            model.put("unpaidDocumentsByName", "");
+            model.put("paidDocumentsByName", "");
+            return;
+        }
+
+        String unpaidDocuments = getUnpaidDocuments(documentName);
+        String paidDocuments = getPaidDocuments(documentName);
+
+        model.put("unpaidDocumentsByName", unpaidDocuments);
+        model.put("paidDocumentsByName", paidDocuments);
+    }
+
+    private void populateModelWithDocuments(Map<String, Object> model) {
         String unpaidDocuments = getUnpaidDocuments();
         String paidDocuments = getPaidDocuments();
 
         model.put("unpaidDocuments", unpaidDocuments);
         model.put("paidDocuments", paidDocuments);
-
-        model.put("success", "false");
-        return model;
     }
 
     public String getUnpaidDocuments() {
-        List<NodeRef> unpaidDocuments = invoiceService.getUnpaidDocuments();
-        return unpaidDocuments.stream().map(Object::toString)
-                .collect(Collectors.joining(", "));
+        return convertToString(invoiceService.getUnpaidDocuments());
+    }
+
+    public String getUnpaidDocuments(String documentName) {
+        return convertToString(invoiceService.getUnpaidDocuments(documentName));
     }
 
     public String getPaidDocuments() {
-        List<NodeRef> paidDocuments = invoiceService.getPaidDocuments();
-        return paidDocuments.stream().map(Object::toString)
+        return convertToString(invoiceService.getPaidDocuments());
+    }
+
+    public String getPaidDocuments(String documentName) {
+        return convertToString(invoiceService.getPaidDocuments(documentName));
+    }
+
+    public String convertToString(List<NodeRef> list) {
+        return list.stream().map(Object::toString)
                 .collect(Collectors.joining(", "));
     }
 

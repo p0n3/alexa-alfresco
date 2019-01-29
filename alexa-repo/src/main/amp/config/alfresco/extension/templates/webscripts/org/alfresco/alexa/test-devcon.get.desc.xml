@@ -1,7 +1,7 @@
 <webscript>
     <shortname>Test For DevCon</shortname>
     <description>Test For DevCon</description>
-    <url>/api/invoice/testDevCon</url>
+    <url>/api/invoice/testDevCon?documentName={documentName}</url>
     <format default="json">extension</format>
     <authentication>user</authentication>
     <family>alexa</family>

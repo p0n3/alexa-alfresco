@@ -25,9 +25,23 @@ public class InvoiceService {
         return unpaidDocuments;
     }
 
+    public List<NodeRef> getUnpaidDocuments(String name) {
+        logger.debug("Get Unpaid Documents by name " + name);
+        List<NodeRef> unpaidDocuments = invoiceUtil.getUnpaidDocuments(name);
+        logger.debug("Got Unpaid Documents with size: " + unpaidDocuments.size());
+        return unpaidDocuments;
+    }
+
     public List<NodeRef> getPaidDocuments() {
         logger.debug("Get Paid Documents");
         List<NodeRef> paidDocuments = invoiceUtil.getPaidDocuments();
+        logger.debug("Got Paid Documents with size: " + paidDocuments.size());
+        return paidDocuments;
+    }
+
+    public List<NodeRef> getPaidDocuments(String name) {
+        logger.debug("Get Paid Documents by name " + name);
+        List<NodeRef> paidDocuments = invoiceUtil.getPaidDocuments(name);
         logger.debug("Got Paid Documents with size: " + paidDocuments.size());
         return paidDocuments;
     }

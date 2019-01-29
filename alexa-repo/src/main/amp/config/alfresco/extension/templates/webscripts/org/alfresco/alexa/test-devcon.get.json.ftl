@@ -1,4 +1,6 @@
 {
     "unpaidDocuments" : "${unpaidDocuments}",
-    "paidDocuments" : "${paidDocuments}"
+    "paidDocuments" : "${paidDocuments}",
+    "unpaidDocumentsByName" : "${unpaidDocumentsByName}",
+    "paidDocumentsByName" : "${paidDocumentsByName}"
 }

@@ -20,6 +20,20 @@ public class AlfrescoWrapper {
 
     private ServiceRegistry serviceRegistry;
 
+    public List<NodeRef> getNodeRefs(NodeRef parentNodeRef, QName type, String name) {
+
+        String query = "PRIMARYPARENT: '" + parentNodeRef + "' AND =TYPE:'" + type + "'"
+                + " AND @cm\\:name:" + '*' + name + '*';
+
+        logger.debug("Executing search with the query: " + query);
+
+        List<NodeRef> nodeRefs = getResults(query).getNodeRefs();
+
+        logger.debug("Got nodeRefs: " + nodeRefs);
+
+        return nodeRefs;
+    }
+
     public List<NodeRef> getNodeRefs(NodeRef parentNodeRef, QName type) {
         String query = "PRIMARYPARENT: '" + parentNodeRef + "' AND =TYPE:'" + type + "'";
 
