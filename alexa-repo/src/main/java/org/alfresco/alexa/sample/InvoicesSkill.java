@@ -1,5 +1,6 @@
 package org.alfresco.alexa.sample;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,9 +22,14 @@ public class InvoicesSkill extends AlfrescoVoiceSkill implements AlfrescoVoiceSe
 
 	public static final String ATTR_STAGE = "stage";
 	public static final String ATTR_INVOICE = "invoice";
+	public static final String ATTR_INVOICES = "invoices";
 	
 	public static final String STAGE_CONFIRM = "confirm";
 	public static final String STAGE_CHOICE = "choice";
+
+	public static final String SLOT_INVOICE_TYPE = "InvoiceType";
+	public static final String SLOT_NUMBER = "Number";
+	
 
 	private ServiceRegistry serviceRegistry;
 	private InvoiceService invoiceService;
@@ -31,30 +37,24 @@ public class InvoicesSkill extends AlfrescoVoiceSkill implements AlfrescoVoiceSe
 	@Override
 	public SessionResponse getResponse(Map<String, Object> attributes, Map<String, String> slots) {
 		
-		
-		
 		SessionResponse sessionResponse = new SessionResponse();
+		NodeService ns = this.serviceRegistry.getNodeService();
 		
 		String stage = (String) attributes.get(ATTR_STAGE);
 		if(stage == null) {
-			String invoiceType = slots.get("InvoiceType");
+			String invoiceType = slots.get(SLOT_INVOICE_TYPE);
 			
-			NodeService ns = this.serviceRegistry.getNodeService();
 			
-			String userName = AuthenticationUtil.getFullyAuthenticatedUser();
-			NodeRef person = this.serviceRegistry.getPersonService().getPerson(userName);
-			NodeRef homeFolder = (NodeRef) ns.getProperty(person, ContentModel.PROP_HOMEFOLDER);
+			List<NodeRef> docs;
 			
-			StoreRef store = new StoreRef(StoreRef.PROTOCOL_WORKSPACE, "SpacesStore");
-			String homeStr = ns.getPath(homeFolder).toPrefixString(this.serviceRegistry.getNamespaceService());
-			
-			String query = "TYPE:\"cm:content\" AND PATH:\""+homeStr+"/cm:Invoices/cm:Unpaid/*\"";
 			if(invoiceType != null) {
-				query += " @cm\\:name:"+invoiceType;
+				docs = invoiceService.getUnpaidDocuments(invoiceType);
 			}
-			ResultSet rs = this.serviceRegistry.getSearchService().query(store, SearchService.LANGUAGE_LUCENE, query);
-
-			List<NodeRef> docs = rs.getNodeRefs();
+			else {
+				docs = invoiceService.getUnpaidDocuments();
+				
+			}
+			
 			if(docs == null || docs.size() == 0) {
 				sessionResponse.setShouldEndSession(true);
 				String msg = "";
@@ -73,26 +73,44 @@ public class InvoicesSkill extends AlfrescoVoiceSkill implements AlfrescoVoiceSe
 				return sessionResponse;
 			}
 			else {
-				//TODO
+				String text = "Which one do you want to mark as paid? ";
+				
+				List<String> invoices = new ArrayList<String>();
+				int ind = 0;
+				
+				for(NodeRef doc : docs) {
+					ind++;
+					
+					String fileName = (String) ns.getProperty(doc, ContentModel.PROP_NAME);
+					text += ind + " - the " + fileName.substring(0, fileName.indexOf("-")).toLowerCase() + "invoice, ";
+					invoices.add(doc.toString());
+				}
+				
+				sessionResponse.setAttribute(ATTR_STAGE, STAGE_CHOICE);
+				sessionResponse.setAttribute(ATTR_INVOICES, String.join(",", invoices));
+				sessionResponse.setShouldEndSession(false);
+				sessionResponse.setSpeechText(text);
+				return sessionResponse;
+				
 			}
-
-			
-			//this.serviceRegistry.getSearchService().query
-			//ns.getChildAssocs(unpaidFolder, childNodeTypeQNames)
-			//stage = "choice";
-			
 		}
 		else if(stage.equals("choice")) {
-			//String invoiceList = (String) attributes.get("invoiceList");
-			//TODO
+			String invoicesStr = (String) attributes.get(ATTR_INVOICES);
+			int number = Integer.parseInt((String) slots.get(SLOT_NUMBER))-1;
+			
+			String invoiceNodeRef = invoicesStr.split(",")[number];
+			String fileName = (String) ns.getProperty(new NodeRef(invoiceNodeRef), ContentModel.PROP_NAME);
+			
+			sessionResponse.setAttribute(ATTR_STAGE, STAGE_CONFIRM);
+			sessionResponse.setAttribute(ATTR_INVOICE, invoiceNodeRef);
+			sessionResponse.setShouldEndSession(false);
+			sessionResponse.setSpeechText("Are you sure, you want to mark the "+fileName.substring(0, fileName.indexOf("-")).toLowerCase()+"invoice as paid?");
+			return sessionResponse;
 		}
 		else if(stage.equals(STAGE_CONFIRM)) {
 			String invoice = (String) attributes.get(ATTR_INVOICE);
 			String confirmStatus = slots.get("Confirm");
 			if(confirmStatus != null && confirmStatus.equals("yes")) {
-				// mark the invoice as paid
-				//NodeService ns = this.serviceRegistry.getNodeService();
-				
 				
 				try {
 					
@@ -109,10 +127,6 @@ public class InvoicesSkill extends AlfrescoVoiceSkill implements AlfrescoVoiceSe
 				return sessionResponse;
 			}
 		}
-		
-		
-		
-		
 		
 		return null;
 	}
