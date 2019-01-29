@@ -7,9 +7,19 @@ import org.alfresco.service.cmr.model.FileNotFoundException;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.springframework.extensions.surf.exception.PlatformRuntimeException;
 
+import java.util.List;
+
 public class InvoiceUtil {
 
     private AlfrescoWrapper alfrescoWrapper;
+
+    public List<NodeRef> getUnpaidDocuments() {
+        return alfrescoWrapper.getNodeRefs(getUnpaidFolder(), ContentModel.TYPE_CONTENT);
+    }
+
+    public List<NodeRef> getPaidDocuments() {
+        return alfrescoWrapper.getNodeRefs(getPaidFolder(), ContentModel.TYPE_CONTENT);
+    }
 
     public void moveFromUnpaidToPaid(NodeRef paidDocumentNodeRef) throws FileNotFoundException {
         NodeRef paidFolder = getPaidFolder();
