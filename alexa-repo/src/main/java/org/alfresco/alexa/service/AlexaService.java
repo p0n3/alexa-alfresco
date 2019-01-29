@@ -170,6 +170,13 @@ public class AlexaService {
 		this.skills.put(alexaSkill.getSkillId(), alexaSkill.buildSkill());
 	}
 
+	public void unregisterSkill(String skillId) {
+		if(this.skills.containsKey(skillId)) {
+			this.skills.remove(skillId);			
+		}
+	}
+	
+	
 	public Skill getSkillById(String skillId) {
 		return this.skills.get(skillId);
 	}
