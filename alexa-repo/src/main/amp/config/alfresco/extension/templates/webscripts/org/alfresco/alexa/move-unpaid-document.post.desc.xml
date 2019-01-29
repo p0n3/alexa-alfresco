@@ -1,0 +1,9 @@
+<webscript>
+    <shortname>Move Unpaid Document</shortname>
+    <description>Move Unpaid Document</description>
+    <url>/api/invoice/move?documentName={documentName}</url>
+    <format default="json"/>
+    <authentication>admin</authentication>
+    <transaction>required</transaction>
+    <family>alexa</family>
+</webscript>

@@ -48,4 +48,16 @@
 <!--         <property name="nodeLocatorService" ref="nodeLocatorService" /> -->
 <!--     </bean> -->
 
+	<bean id="alfrescoWrapper" class="org.alfresco.alexa.service.AlfrescoWrapper">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+
+	<bean id="invoiceUtil" class="org.alfresco.alexa.service.InvoiceUtil">
+		<property name="alfrescoWrapper" ref="alfrescoWrapper" />
+	</bean>
+
+	<bean id="invoiceService" class="org.alfresco.alexa.service.InvoiceService">
+		<property name="invoiceUtil" ref="invoiceUtil" />
+	</bean>
+
 </beans>
