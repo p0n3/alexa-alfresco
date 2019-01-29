@@ -62,6 +62,9 @@ public class DefaultSessionIntentHandler implements RequestHandler {
     		return res;
     	}
     	Map<String, Slot> slotMaps = ((IntentRequest)req).getIntent().getSlots();
+    	if(slotMaps == null) {
+    		return res;
+    	}
     	for(String key : slotMaps.keySet()) {
     		res.put(key, slotMaps.get(key).getValue());
     	}

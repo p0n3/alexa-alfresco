@@ -53,7 +53,7 @@ public class AlfrescoVoiceScriptSkill extends AlfrescoVoiceSkill {
 
 	public void unregisterScriptIntentIfExist(String intentId) {
 		for (GenericRequestHandler<HandlerInput, Optional<Response>> handler : this.handlers) {
-			if (((DefaultSessionIntentHandler) handler).getIntentId().equals(intentId)) {
+			if (handler instanceof DefaultSessionIntentHandler && ((DefaultSessionIntentHandler) handler).getIntentId().equals(intentId)) {
 				this.handlers.remove(handler);
 				break;
 			}
