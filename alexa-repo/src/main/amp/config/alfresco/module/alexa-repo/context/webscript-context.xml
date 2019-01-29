@@ -37,12 +37,12 @@
 	<bean id="webscript.org.alfresco.alexa.home-folder.get"
 		  class="org.alfresco.alexa.webscript.GetHomeFolder"
 		  parent="webscript">
-		<property name="invoiceUtil" ref="invoiceUtil" />
+		<property name="invoiceUtil" ref="alexa.invoiceUtil" />
 	</bean>
 
 	<bean id="webscript.org.alfresco.alexa.move-unpaid-document.post"
 		  class="org.alfresco.alexa.webscript.MoveUnpaidDocument"
 		  parent="webscript">
-		<property name="invoiceService" ref="invoiceService" />
+		<property name="invoiceService" ref="alexa.invoiceService" />
 	</bean>
 </beans>
