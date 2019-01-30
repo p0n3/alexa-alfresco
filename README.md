@@ -1,4 +1,4 @@
-# Alexa-Alfresco ingegration
+# Alexa-Alfresco integration
 
 This AMP module allows you to easily create a new Alexa's skill integrated with ACS. It uses the official Java SDK made by Amazon.
 
