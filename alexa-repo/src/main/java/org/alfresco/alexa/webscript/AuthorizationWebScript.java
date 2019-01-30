@@ -23,6 +23,12 @@ import org.springframework.extensions.webscripts.Status;
 import org.springframework.extensions.webscripts.WebScriptException;
 import org.springframework.extensions.webscripts.WebScriptRequest;
 
+/**
+ * Webscript created for linking alexa account with alfresco
+ * 
+ * @author ltworek
+ *
+ */
 public class AuthorizationWebScript extends DeclarativeWebScript {
 
 	private PersonService personService;

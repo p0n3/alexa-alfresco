@@ -8,6 +8,12 @@ import java.util.Optional;
 
 import static com.amazon.ask.request.Predicates.intentName;
 
+/**
+ * Default handler for AMAZON.StopIntent intent
+ * 
+ * @author ltworek
+ *
+ */
 public class DefaultStopIntentHandler implements RequestHandler {
 	
 	private String cardTitle = "Alfresco";

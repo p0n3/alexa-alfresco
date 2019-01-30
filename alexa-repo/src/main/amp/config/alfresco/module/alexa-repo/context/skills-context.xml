@@ -20,27 +20,6 @@
 <!-- 		</property> -->
 <!-- 	</bean> -->
 
-
-<!-- 	<bean id="alexa.sample.helloUser2" class="org.alfresco.alexa.sample.UserNameSkill" parent="alexa.skill"> -->
-<!-- 		<property name="skillName"> -->
-<!-- 			<value>Hello User</value> -->
-<!-- 		</property> -->
-<!-- 		<property name="skillId"> -->
-<!-- 			<value>amzn1.ask.skill.76de4c77-447a-451c-ac99-ae4b873c9497</value> -->
-<!-- 		</property> -->
-<!-- 		<property name="helpText"> -->
-<!-- 			<value>Say hello</value> -->
-<!-- 		</property> -->
-<!-- 		<property name="welcomeText"> -->
-<!-- 			<value>Welcome to the Alfresco</value> -->
-<!-- 		</property> -->
-		
-<!-- 		<property name="serviceRegistry"> -->
-<!--             <ref bean="ServiceRegistry" /> -->
-<!--         </property> -->
-<!-- 	</bean> -->
-
-
 <!-- 	<bean id="alexa.sample.helloUser" class="org.alfresco.alexa.sample.UserNameSkill" parent="alexa.skill"> -->
 <!-- 		<property name="skillName"> -->
 <!-- 			<value>Hello User</value> -->

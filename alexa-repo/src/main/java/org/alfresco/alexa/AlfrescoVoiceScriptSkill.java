@@ -11,16 +11,18 @@ import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.model.Response;
 import com.amazon.ask.request.handler.GenericRequestHandler;
 
+/**
+ * Skill for JS scripts
+ * 
+ * @author ltworek
+ *
+ */
 public class AlfrescoVoiceScriptSkill extends AlfrescoVoiceSkill {
 
 	private ServiceRegistry serviceRegistry;
 
-	// private Map<String,NodeRef> scriptSkills;
-
 	@Override
 	protected void registerIntents() {
-		// TODO register all scripts from some folders
-
 	}
 	
 	public void setServiceRegistry(ServiceRegistry serviceRegistry) {
@@ -43,6 +45,13 @@ public class AlfrescoVoiceScriptSkill extends AlfrescoVoiceSkill {
 		handlers.add(new DefaultSessionIntentHandler(this.skillName, intentId, intent));
 	}
 	
+	/**
+	 * Get intent id from file name.
+	 * File nameformat: <intent_id>.js
+	 * 
+	 * @param node	scrtiptName
+	 * @return intentId
+	 */
 	public String getIntentIdFromName(NodeRef node) {
 		String intentId = (String) this.serviceRegistry.getNodeService().getProperty(node, ContentModel.PROP_NAME);
 

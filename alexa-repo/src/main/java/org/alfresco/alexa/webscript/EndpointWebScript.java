@@ -24,11 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.alfresco.alexa.handlers.DefaultStopIntentHandler;
-import org.alfresco.alexa.handlers.HelloWorldIntentHandler;
-import org.alfresco.alexa.handlers.DefaultHelpIntentHandler;
-import org.alfresco.alexa.handlers.DefaultLaunchRequestHandler;
-import org.alfresco.alexa.handlers.DefaultSessionEndedRequestHandler;
 import org.alfresco.alexa.service.AlexaService;
 import org.alfresco.repo.security.authentication.AuthenticationUtil;
 import org.alfresco.repo.security.authentication.AuthenticationUtil.RunAsWork;
@@ -40,7 +35,6 @@ import org.springframework.extensions.webscripts.Status;
 import org.springframework.extensions.webscripts.WebScriptRequest;
 
 import com.amazon.ask.Skill;
-import com.amazon.ask.Skills;
 import com.amazon.ask.model.RequestEnvelope;
 import com.amazon.ask.model.ResponseEnvelope;
 import com.amazon.ask.model.services.Serializer;
@@ -50,42 +44,46 @@ import com.amazon.ask.servlet.verifiers.SkillRequestTimestampVerifier;
 import com.amazon.ask.servlet.verifiers.SkillServletVerifier;
 import com.amazon.ask.util.JacksonSerializer;
 
-
+/**
+ * Alexa Endpoind Webscript. It process request from alexa and invokes suitable
+ * skill
+ * 
+ * @author ltworek
+ *
+ */
 public class EndpointWebScript extends DeclarativeWebScript {
-   
+
 	private static Log logger = LogFactory.getLog(EndpointWebScript.class);
-	
+
 	private AlexaService alexaService;
-	
+
 	private List<SkillServletVerifier> verifiers;
-    
-    private final Serializer serializer = new JacksonSerializer();
 
-    public EndpointWebScript() {
-	
+	private final Serializer serializer = new JacksonSerializer();
 
-        List<SkillServletVerifier> defaultVerifiers = new ArrayList<>();
-        if (!ServletUtils.isRequestSignatureCheckSystemPropertyDisabled()) {
-            defaultVerifiers.add(new SkillRequestSignatureVerifier());
-        }
-        Long timestampToleranceProperty = ServletUtils.getTimeStampToleranceSystemProperty();
-        defaultVerifiers.add(new SkillRequestTimestampVerifier(timestampToleranceProperty != null
-                ? timestampToleranceProperty : DEFAULT_TOLERANCE_MILLIS));
+	public EndpointWebScript() {
 
-        this.verifiers = defaultVerifiers;
-    
-    }
-    
-    public void setAlexaService(AlexaService alexaService) {
+		List<SkillServletVerifier> defaultVerifiers = new ArrayList<>();
+		if (!ServletUtils.isRequestSignatureCheckSystemPropertyDisabled()) {
+			defaultVerifiers.add(new SkillRequestSignatureVerifier());
+		}
+		Long timestampToleranceProperty = ServletUtils.getTimeStampToleranceSystemProperty();
+		defaultVerifiers.add(new SkillRequestTimestampVerifier(timestampToleranceProperty != null ? timestampToleranceProperty : DEFAULT_TOLERANCE_MILLIS));
+
+		this.verifiers = defaultVerifiers;
+
+	}
+
+	public void setAlexaService(AlexaService alexaService) {
 		this.alexaService = alexaService;
 	}
-    
-    protected Map<String, Object> executeImpl(WebScriptRequest req, Status status, Cache cache) {
-        Map<String, Object> model = new HashMap<String, Object>();
 
-        logger.debug("Endpoint webscript was called!");
-        
-        RequestEnvelope requestEnvelope;
+	protected Map<String, Object> executeImpl(WebScriptRequest req, Status status, Cache cache) {
+		Map<String, Object> model = new HashMap<String, Object>();
+
+		logger.debug("Endpoint webscript was called!");
+
+		RequestEnvelope requestEnvelope;
 		try {
 			requestEnvelope = serializer.deserialize(req.getContent().getContent(), RequestEnvelope.class);
 
@@ -94,45 +92,29 @@ public class EndpointWebScript extends DeclarativeWebScript {
 
 			Skill skill = this.alexaService.getSkillById(skillId);
 			String userName = this.alexaService.validateAccessToken(accessToken, skillId);
-			
+
 			ResponseEnvelope skillResponse = null;
-	        if(userName == null) {
-	        	// no auth
-	        	skillResponse = skill.invoke(requestEnvelope);
-	        }
-	        else {
-	        	skillResponse = AuthenticationUtil.runAs(new RunAsWork<ResponseEnvelope>() {
+			if (userName == null) {
+				// no auth
+				skillResponse = skill.invoke(requestEnvelope);
+			} else {
+				skillResponse = AuthenticationUtil.runAs(new RunAsWork<ResponseEnvelope>() {
 					@Override
 					public ResponseEnvelope doWork() throws Exception {
 						return skill.invoke(requestEnvelope);
 					}
-	        		
-				}, userName);
-	        }
-			
-	        String res = serializer.serialize(skillResponse);
-	        model.put("alexaRes", res);
 
-	        
+				}, userName);
+			}
+
+			String res = serializer.serialize(skillResponse);
+			model.put("alexaRes", res);
+
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
-//        final RequestEnvelope deserializedRequestEnvelope = serializer.deserialize(IOUtils.toString(
-//                serializedRequestEnvelope, ServletConstants.CHARACTER_ENCODING), RequestEnvelope.class);
 
-        // Verify the authenticity of the request by executing configured verifiers.
-//        for (SkillServletVerifier verifier : verifiers) {
-//            verifier.verify(request, serializedRequestEnvelope, deserializedRequestEnvelope);
-//        }
-        
-        
-        
+		return model;
+	}
 
-        return model;
-    }
-    
-    
-    
 }

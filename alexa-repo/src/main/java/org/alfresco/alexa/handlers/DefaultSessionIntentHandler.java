@@ -1,16 +1,3 @@
-/*
-     Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-
-     Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file
-     except in compliance with the License. A copy of the License is located at
-
-         http://aws.amazon.com/apache2.0/
-
-     or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for
-     the specific language governing permissions and limitations under the License.
-*/
-
 package org.alfresco.alexa.handlers;
 
 import static com.amazon.ask.request.Predicates.intentName;
@@ -31,6 +18,12 @@ import com.amazon.ask.model.Response;
 import com.amazon.ask.model.Slot;
 import com.amazon.ask.response.ResponseBuilder;
 
+/**
+ * Default handler for intents that use session attributes, slots
+ * 
+ * @author ltworek
+ *
+ */
 public class DefaultSessionIntentHandler implements RequestHandler {
 
 	String cardTitle = "Alfresco";
@@ -38,66 +31,61 @@ public class DefaultSessionIntentHandler implements RequestHandler {
 	String intentId;
 	AlfrescoVoiceSessionIntent alfrescoVoiceIntent;
 
-	
 	public DefaultSessionIntentHandler(String intentId, AlfrescoVoiceSessionIntent alfrescoVoiceIntent) {
 		this.intentId = intentId;
 		this.alfrescoVoiceIntent = alfrescoVoiceIntent;
 	}
-	
-    public DefaultSessionIntentHandler(String cardTitle, String intentId, AlfrescoVoiceSessionIntent alfrescoVoiceIntent) {
+
+	public DefaultSessionIntentHandler(String cardTitle, String intentId, AlfrescoVoiceSessionIntent alfrescoVoiceIntent) {
 		this.cardTitle = cardTitle;
 		this.intentId = intentId;
 		this.alfrescoVoiceIntent = alfrescoVoiceIntent;
 	}
-    
-    public String getIntentId() {
+
+	public String getIntentId() {
 		return intentId;
 	}
-    
-    private Map<String, String> getSlots(HandlerInput input) {
-    	Map<String, String> res = new HashMap<String, String>();
-    	
-    	Request req = input.getRequestEnvelope().getRequest();
-    	if(!(req instanceof IntentRequest) || ((IntentRequest)req).getIntent() == null) {
-    		return res;
-    	}
-    	Map<String, Slot> slotMaps = ((IntentRequest)req).getIntent().getSlots();
-    	if(slotMaps == null) {
-    		return res;
-    	}
-    	for(String key : slotMaps.keySet()) {
-    		res.put(key, slotMaps.get(key).getValue());
-    	}
-    	
-    	return res;
-    }
+
+	private Map<String, String> getSlots(HandlerInput input) {
+		Map<String, String> res = new HashMap<String, String>();
+
+		Request req = input.getRequestEnvelope().getRequest();
+		if (!(req instanceof IntentRequest) || ((IntentRequest) req).getIntent() == null) {
+			return res;
+		}
+		Map<String, Slot> slotMaps = ((IntentRequest) req).getIntent().getSlots();
+		if (slotMaps == null) {
+			return res;
+		}
+		for (String key : slotMaps.keySet()) {
+			res.put(key, slotMaps.get(key).getValue());
+		}
+
+		return res;
+	}
 
 	@Override
-    public boolean canHandle(HandlerInput input) {
-        return input.matches(intentName(this.intentId));
-    }
+	public boolean canHandle(HandlerInput input) {
+		return input.matches(intentName(this.intentId));
+	}
 
-    @Override
-    public Optional<Response> handle(HandlerInput input) {
-       
-    	AttributesManager attributesManager = input.getAttributesManager();
-    	
-    	
-    	
-    	SessionResponse sessionResponse = alfrescoVoiceIntent.getResponse(attributesManager.getSessionAttributes(), this.getSlots(input));
-    	//input.getRequestEnvelope().getSession().getAttributes()
-    	String speechText = sessionResponse.getSpeechText();
-    	
-    	if(sessionResponse.hasAttributes()) {
-    		attributesManager.setSessionAttributes(sessionResponse.getAttributes());
-    	}
-    	
-    	ResponseBuilder responseBuilder = input.getResponseBuilder();
-    	responseBuilder.withSpeech(speechText).withSimpleCard(this.cardTitle, speechText);
-    	responseBuilder.withShouldEndSession(sessionResponse.shouldEndSession());
-    	
-    	
-        return responseBuilder.build();
-    }
+	@Override
+	public Optional<Response> handle(HandlerInput input) {
+
+		AttributesManager attributesManager = input.getAttributesManager();
+
+		SessionResponse sessionResponse = alfrescoVoiceIntent.getResponse(attributesManager.getSessionAttributes(), this.getSlots(input));
+		String speechText = sessionResponse.getSpeechText();
+
+		if (sessionResponse.hasAttributes()) {
+			attributesManager.setSessionAttributes(sessionResponse.getAttributes());
+		}
+
+		ResponseBuilder responseBuilder = input.getResponseBuilder();
+		responseBuilder.withSpeech(speechText).withSimpleCard(this.cardTitle, speechText);
+		responseBuilder.withShouldEndSession(sessionResponse.shouldEndSession());
+
+		return responseBuilder.build();
+	}
 
 }

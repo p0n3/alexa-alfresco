@@ -26,9 +26,16 @@ import org.json.simple.JSONObject;
 
 import com.amazon.ask.Skill;
 
+/**
+ * Alexa service
+ * 
+ * @author ltworek
+ *
+ */
 public class AlexaService {
 
 	public static final String TOKEN_SEPARATOR = "#";
+
 	private static Log logger = LogFactory.getLog(AlexaService.class);
 
 	private PersonService personService;
@@ -36,21 +43,6 @@ public class AlexaService {
 
 	private ShaPasswordEncoderImpl encoder;
 	private Map<String, Skill> skills = new HashMap<String, Skill>();
-
-	// public static void main(String[] args) {
-	//
-	// String token = "5e186c2a-f430-4503-9426-09ddabef33f8";
-	// //generateRandomToken();
-	// String clientId = "id_klienta";
-	// String userName = "admin";
-	//
-	// String hashedToken = hashToken(token, clientId);
-	// String accessToken = generateAccessToken(token, userName);
-	//
-	// System.out.println(hashedToken);
-	// System.out.println(accessToken);
-	// System.out.println(validateAccessToken(accessToken, clientId));
-	// }
 
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
@@ -80,6 +72,13 @@ public class AlexaService {
 		return Base64.encodeBase64String(enc.getBytes());
 	}
 
+	/**
+	 * Validate access token provided by AVS
+	 * 
+	 * @param encodedAccessToken	token from query
+	 * @param clientId	skill id
+	 * @return
+	 */
 	public String validateAccessToken(String encodedAccessToken, String clientId) {
 		String accessToken = new String(Base64.decodeBase64(encodedAccessToken));
 		int separatorPosition = accessToken.indexOf(TOKEN_SEPARATOR);
@@ -101,8 +100,13 @@ public class AlexaService {
 		return null;
 	}
 
+	/**
+	 * Send alexa notification using NotifyMe skill
+	 * 
+	 * @param text	notification text
+	 */
 	public void sendNotification(String text) {
-		// FIXME url
+		// TODO url from properties
 		String urlString = "https://api.notifymyecho.com/v1/NotifyMe";
 		URL url;
 		try {
@@ -112,10 +116,10 @@ public class AlexaService {
 
 			JSONObject json = new JSONObject();
 			json.put("notification", text);
-			//FIXME accesscode 
-			json.put("accessCode", "amzn1.ask.account.AEF4AXCW6GCFGSEGGQCHLWFWZX3UUBMB2XOI5HAF2KBIKY4J2IKO4LEVWF2Q5MKMESRSHNXKT266TUDEQMIF2OSHDX2VIAP2BXHDDCMRXOAEJAVTWG7SLNYSWKRYYUWSLZKIE66DC3F7Q6LUZAFCG7VXUQVAHY64HN2BNKZ2UBAQMKEFH2HTADGJWAB7BD2U52GG7TLXFEY5SVY");
+			// TODO accesscode from properties
+			json.put("accessCode", "...");
 
-			String urlParameters = json.toString(); // postData.toString();
+			String urlParameters = json.toString();
 
 			byte[] postDataBytes = urlParameters.getBytes(StandardCharsets.UTF_8);
 
@@ -160,7 +164,6 @@ public class AlexaService {
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -171,12 +174,11 @@ public class AlexaService {
 	}
 
 	public void unregisterSkill(String skillId) {
-		if(this.skills.containsKey(skillId)) {
-			this.skills.remove(skillId);			
+		if (this.skills.containsKey(skillId)) {
+			this.skills.remove(skillId);
 		}
 	}
-	
-	
+
 	public Skill getSkillById(String skillId) {
 		return this.skills.get(skillId);
 	}
