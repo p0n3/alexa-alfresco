@@ -14,6 +14,11 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * Wrapper for Alfresco Services
+ *
+ * @author urosvukasinovic
+ */
 public class AlfrescoWrapper {
 
     private final Logger logger = Logger.getLogger(InvoiceService.class);

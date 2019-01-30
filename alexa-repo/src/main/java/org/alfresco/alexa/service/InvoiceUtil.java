@@ -9,6 +9,11 @@ import org.springframework.extensions.surf.exception.PlatformRuntimeException;
 
 import java.util.List;
 
+/**
+ * Contains util methods for Invoices
+ *
+ * @author urosvukasinovic
+ */
 public class InvoiceUtil {
 
     private AlfrescoWrapper alfrescoWrapper;
