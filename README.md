@@ -17,9 +17,9 @@ You can also find couple examples of usage - from a basic skill that returns use
 1. Go to https://developer.amazon.com/alexa/console/ask
 2. Create a new custom skill from scratch.
 3. Select HTTPS as the endpoint type.
-4. Set an endpoint url: https://<your domain>/alfresco/service/api/alexa/endpoint 
+4. Set an endpoint url: https://[your domain]/alfresco/service/api/alexa/endpoint 
 5. Under Account Linking set: 
-	1. Authorization URI: https://<your domain>/share/page/alexa-authentication
+	1. Authorization URI: https://[your domain]/share/page/alexa-authentication
 	2. Client ID: <your skill id>
 	3. Scope: documents, tasks
 	4. Domain list: <your domain>
@@ -67,7 +67,7 @@ You can also find couple examples of usage - from a basic skill that returns use
 * **Łukasz Tworek** - *Initial work, SDK integration, account linking* - [p0n3](https://github.com/p0n3)
 * **Uros Vukasinovic** - *Invoice service, testing* - [uvukasinovic](https://github.com/uvukasinovic)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/p0n3/alexa-alfresco/contributors) who participated in this project.
 
 ## License
 
